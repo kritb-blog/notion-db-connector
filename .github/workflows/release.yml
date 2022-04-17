@@ -1,8 +1,13 @@
 name: Release
+
 on:
   push:
     branches:
-      - main
+      - '**'
+    tags-ignore:
+      - v*.*.*
+  pull_request:
+
 jobs:
   build:
     name: build
@@ -15,7 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: lts/*
+          node-version: [16.x]
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Test
@@ -31,15 +36,17 @@ jobs:
     needs: [build]
     steps:
       - name: Checkout
-          uses: actions/checkout@v2
-          with:
-            fetch-depth: 0
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: lts/*
+          node-version: [16.x]
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+      - name: Build
+        run: yarn build
       - name: Release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

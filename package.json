@@ -1,6 +1,7 @@
 {
-  "name": "notion-db-connector",
+  "name": "@kritb-blog/notion-db-connector",
   "version": "0.0.0-development",
+  "private": false,
   "description": "A npm package to connect Notion DB API",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",

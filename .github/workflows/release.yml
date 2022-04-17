@@ -1,8 +1,13 @@
 name: Release
+
 on:
   push:
-    branches:
-      - main
+      branches:
+          - "**"
+      tags-ignore:
+          - v*.*.*
+  pull_request:
+  
 jobs:
   build:
     name: build

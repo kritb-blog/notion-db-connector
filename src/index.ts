@@ -9,6 +9,8 @@ import {
   QueryDatabaseResponse,
   GetPageParameters,
   GetPageResponse,
+  GetBlockParameters,
+  GetBlockResponse,
 } from '@notionhq/client/build/src/api-endpoints';
 
 class NotionDbConnector {
@@ -39,6 +41,20 @@ class NotionDbConnector {
         database_id: params.database_id,
         filter: params.filter,
         sorts: params.sorts,
+      });
+
+      return result;
+    } catch (error: unknown) {
+      this.logError(error);
+    }
+  };
+
+  public fetchBlock = async (
+    params: GetBlockParameters
+  ): Promise<GetBlockResponse | undefined> => {
+    try {
+      const result: GetBlockResponse = await this.client.blocks.retrieve({
+        block_id: params.block_id,
       });
 
       return result;

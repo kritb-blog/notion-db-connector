@@ -1,4 +1,9 @@
-import { MockNotionClient, pageRetrieveMock, queryMock } from './testUtils';
+import {
+  blockRetrieveMock,
+  MockNotionClient,
+  pageRetrieveMock,
+  queryMock,
+} from './testUtils';
 
 jest.mock('@notionhq/client', () => {
   return {
@@ -45,6 +50,16 @@ describe('NotionDbConnector', () => {
       await connector.fetchPage({ page_id: '1234' });
       expect(pageRetrieveMock).toHaveBeenNthCalledWith(1, {
         page_id: '1234',
+      });
+    });
+  });
+
+  describe('fetchBlock', () => {
+    it('should call fetch correctly', async () => {
+      const connector = new NotionDbConnector('');
+      await connector.fetchBlock({ block_id: '1234' });
+      expect(blockRetrieveMock).toHaveBeenNthCalledWith(1, {
+        block_id: '1234',
       });
     });
   });

@@ -1,6 +1,7 @@
 const queryMock = jest.fn();
 const pageRetrieveMock = jest.fn();
 const blockRetrieveMock = jest.fn();
+const blockChildrenListMock = jest.fn();
 
 class MockNotionClient {
   public databases;
@@ -15,8 +16,17 @@ class MockNotionClient {
     };
     this.blocks = {
       retrieve: blockRetrieveMock,
+      children: {
+        list: blockChildrenListMock,
+      },
     };
   }
 }
 
-export { MockNotionClient, queryMock, pageRetrieveMock, blockRetrieveMock };
+export {
+  MockNotionClient,
+  queryMock,
+  pageRetrieveMock,
+  blockRetrieveMock,
+  blockChildrenListMock,
+};

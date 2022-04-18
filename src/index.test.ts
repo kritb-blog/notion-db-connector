@@ -1,4 +1,5 @@
 import {
+  blockChildrenListMock,
   blockRetrieveMock,
   MockNotionClient,
   pageRetrieveMock,
@@ -60,6 +61,20 @@ describe('NotionDbConnector', () => {
       await connector.fetchBlock({ block_id: '1234' });
       expect(blockRetrieveMock).toHaveBeenNthCalledWith(1, {
         block_id: '1234',
+      });
+    });
+  });
+
+  describe('fetchBlockChildren', () => {
+    it('should call fetch correctly', async () => {
+      const connector = new NotionDbConnector('');
+      await connector.fetchBlockChildren(
+        { block_id: '1234', children: [] },
+        20
+      );
+      expect(blockChildrenListMock).toHaveBeenNthCalledWith(1, {
+        block_id: '1234',
+        page_size: 20,
       });
     });
   });

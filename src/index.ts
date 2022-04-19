@@ -11,6 +11,8 @@ import {
   GetPageResponse,
   GetBlockParameters,
   GetBlockResponse,
+  AppendBlockChildrenParameters,
+  AppendBlockChildrenResponse,
 } from '@notionhq/client/build/src/api-endpoints';
 
 class NotionDbConnector {
@@ -56,6 +58,23 @@ class NotionDbConnector {
       const result: GetBlockResponse = await this.client.blocks.retrieve({
         block_id: params.block_id,
       });
+
+      return result;
+    } catch (error: unknown) {
+      this.logError(error);
+    }
+  };
+
+  public fetchBlockChildren = async (
+    params: AppendBlockChildrenParameters,
+    pageSize: number
+  ): Promise<AppendBlockChildrenResponse | undefined> => {
+    try {
+      const result: AppendBlockChildrenResponse =
+        await this.client.blocks.children.list({
+          block_id: params.block_id,
+          page_size: pageSize,
+        });
 
       return result;
     } catch (error: unknown) {

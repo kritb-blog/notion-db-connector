@@ -14,6 +14,8 @@ import {
   AppendBlockChildrenParameters,
   AppendBlockChildrenResponse,
 } from '@notionhq/client/build/src/api-endpoints';
+import { cacheKeyGenerator } from './cache/cacheKeyGenerator';
+import { cacheManager } from './cache/cacheManager';
 
 class NotionDbConnector {
   private client: Client;
@@ -25,9 +27,15 @@ class NotionDbConnector {
     params: GetPageParameters
   ): Promise<GetPageResponse | undefined> => {
     try {
-      const result: GetPageResponse = await this.client.pages.retrieve({
-        page_id: params.page_id,
-      });
+      const fetch = async () =>
+        this.client.pages.retrieve({
+          page_id: params.page_id,
+        });
+      const result: GetPageResponse = await cacheManager<GetPageResponse>(
+        cacheKeyGenerator(params.page_id),
+        parseInt(process.env.NOTIONDB_CACHE_TTL || '86400'),
+        fetch
+      );
 
       return result;
     } catch (error: unknown) {
@@ -39,11 +47,22 @@ class NotionDbConnector {
     params: QueryDatabaseParameters
   ): Promise<QueryDatabaseResponse | undefined> => {
     try {
-      const result: QueryDatabaseResponse = await this.client.databases.query({
-        database_id: params.database_id,
-        filter: params.filter,
-        sorts: params.sorts,
-      });
+      const fetch = async () =>
+        this.client.databases.query({
+          database_id: params.database_id,
+          filter: params.filter,
+          sorts: params.sorts,
+        });
+      const result: QueryDatabaseResponse =
+        await cacheManager<QueryDatabaseResponse>(
+          cacheKeyGenerator(
+            params.database_id,
+            JSON.stringify(params.filter),
+            JSON.stringify(params.sorts)
+          ),
+          parseInt(process.env.NOTIONDB_CACHE_TTL || '86400'),
+          fetch
+        );
 
       return result;
     } catch (error: unknown) {
@@ -102,5 +121,6 @@ class NotionDbConnector {
   };
 }
 
+export type { AppendBlockChildrenResponse };
 export type { QueryDatabaseParameters, QueryDatabaseResponse };
 export { NotionDbConnector };

@@ -102,4 +102,5 @@ class NotionDbConnector {
   };
 }
 
+export type { QueryDatabaseParameters, QueryDatabaseResponse };
 export { NotionDbConnector };

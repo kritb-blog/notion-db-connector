@@ -15,7 +15,7 @@ import {
   AppendBlockChildrenResponse,
 } from '@notionhq/client/build/src/api-endpoints';
 import { cacheKeyGenerator } from './cache/cacheKeyGenerator';
-import { cacheManager } from './cache/cacheManager';
+import { cacheManager, CacheResult } from './cache/cacheManager';
 
 class NotionDbConnector {
   private client: Client;
@@ -31,11 +31,12 @@ class NotionDbConnector {
         this.client.pages.retrieve({
           page_id: params.page_id,
         });
-      const result: GetPageResponse = await cacheManager<GetPageResponse>(
-        cacheKeyGenerator(params.page_id),
-        parseInt(process.env.NOTIONDB_CACHE_TTL || '86400'),
-        fetch
-      );
+      const { result }: CacheResult<GetPageResponse> =
+        await cacheManager<GetPageResponse>(
+          cacheKeyGenerator(params.page_id),
+          parseInt(process.env.NOTIONDB_CACHE_TTL || '86400'),
+          fetch
+        );
 
       return result;
     } catch (error: unknown) {
@@ -53,7 +54,7 @@ class NotionDbConnector {
           filter: params.filter,
           sorts: params.sorts,
         });
-      const result: QueryDatabaseResponse =
+      const { result }: CacheResult<QueryDatabaseResponse> =
         await cacheManager<QueryDatabaseResponse>(
           cacheKeyGenerator(
             params.database_id,

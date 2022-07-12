@@ -1,14 +1,25 @@
 import cache from 'memory-cache';
 
+interface CacheResult<T> {
+  isCacheMissed: boolean;
+  result: T;
+}
+
 export const cacheManager = async <T>(
   key: string,
   ttl: number,
   fetch: () => Promise<T>
-): Promise<T> => {
+): Promise<CacheResult<T>> => {
   if (!cache.get(key)) {
-    console.log(`Cache ${key} missed`);
-    const value = await fetch();
-    cache.put(key, value, ttl);
+    const result = await fetch();
+    cache.put(key, result, ttl);
+    return {
+      isCacheMissed: true,
+      result,
+    };
   }
-  return cache.get(key) as T;
+  return {
+    isCacheMissed: false,
+    result: cache.get(key) as T,
+  };
 };

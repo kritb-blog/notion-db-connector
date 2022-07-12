@@ -1,6 +1,6 @@
 import cache from 'memory-cache';
 
-interface CacheResult<T> {
+export interface CacheResult<T> {
   isCacheMissed: boolean;
   result: T;
 }

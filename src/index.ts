@@ -106,13 +106,13 @@ class NotionDbConnector {
     if (isNotionClientError(error)) {
       switch (error.code) {
         case ClientErrorCode.RequestTimeout:
-          // ...
+          console.error(ClientErrorCode.RequestTimeout);
           break;
         case APIErrorCode.ObjectNotFound:
-          // ...
+          console.error(APIErrorCode.ObjectNotFound);
           break;
         case APIErrorCode.Unauthorized:
-          // ...
+          console.error(APIErrorCode.Unauthorized);
           break;
         // ...
         default:

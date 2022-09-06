@@ -22,11 +22,7 @@
     "typecheck": "tsc --noEmit"
   },
   "license": "MIT",
-  "author": {
-    "name": "Krit Bannachaisirisuk",
-    "email": "krit.bannachaisirisuk@gmail.com",
-    "url": "https://github.com/kritb-blog"
-  },
+  "author": "Krit Bannachaisirisuk <krit.bannachaisirisuk@gmail.com> (https://github.com/kritb-blog)",
   "engines": {
     "node": ">=12.0"
   },
@@ -85,7 +81,7 @@
     "url": "git+https://github.com/kritb-blog/notion-db-connector.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://registry.npmjs.org"
   },
   "release": {
     "branches": [

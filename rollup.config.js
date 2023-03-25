@@ -5,6 +5,7 @@ import json from "@rollup/plugin-json";
 import { terser } from "rollup-plugin-terser";
 import dts from "rollup-plugin-dts";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
+import analyze from 'rollup-plugin-analyzer'
 
 const packageJson = require("./package.json");
 
@@ -29,7 +30,8 @@ export default [
             commonjs(),
             typescript({ tsconfig: "./tsconfig.json" }),
             terser(),
-            json()
+            json(),
+            analyze(),
         ],
     },
     {
